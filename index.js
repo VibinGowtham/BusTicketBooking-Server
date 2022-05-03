@@ -9,9 +9,11 @@ const cityRoutes=require('./routes/cityRoutes')
 const busRoutes=require('./routes/busRoutes')
 const seatRoutes=require('./routes/seatRoutes')
 const bookingRoutes=require('./routes/bookingRoutes')
+
 app.use(cors())
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json())
+
 app.use('/user', userRoutes)
 app.use('/city', cityRoutes)
 app.use('/bus',busRoutes)

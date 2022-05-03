@@ -1,4 +1,4 @@
-const mongoose=require('../databaseConfig/config')
+const mongoose=require('../config/dbConfig')
 const Schema=mongoose.Schema;
 
 const locationSchema=new Schema({

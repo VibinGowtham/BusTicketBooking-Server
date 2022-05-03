@@ -1,5 +1,4 @@
 const express = require("express")
-const { deleteModel } = require("../databaseConfig/config")
 
 const { getAllBookings, addBooking, getDetailedBookings, deleteAllBookings } = require("../services/bookingServices")
 

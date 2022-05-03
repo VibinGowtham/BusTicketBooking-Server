@@ -1,5 +1,5 @@
-const { Schema } = require('../databaseConfig/config')
-const mongoose=require('../databaseConfig/config')
+const { Schema } = require('../config/dbConfig')
+const mongoose=require('../config/dbConfig')
 
 const BookingSchema=new Schema({
     userId:{

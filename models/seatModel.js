@@ -1,4 +1,5 @@
-const mongoose=require('../databaseConfig/config');
+
+const mongoose=require('../config/dbConfig')
 
 const seatSchema=new mongoose.Schema({
     busId:{
