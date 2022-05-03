@@ -1,13 +1,14 @@
 const Booking = require("../models/bookingModel");
+const { sendMail } = require('../config/mailConfig')
 
 const getAllBookings = async (req, res) => {
     let results = await Booking.find()
-    res.send(results)
+    let total=results.length
+    res.send({total,results})
 }
 
 const getDetailedBookings = async (_id) => {
     let booking = await Booking.findOne({_id}).populate(['userId', 'busId'])
-    console.log(booking);
         let obj = {
             BookingId: booking._id,
             Name: booking.userId.name,
@@ -17,11 +18,10 @@ const getDetailedBookings = async (_id) => {
             Seats: booking.seats,
             Boarding_Location: booking.busId.boardingLocation,
             Destination_Location: booking.busId.destinationLocation,
-            DepatureTime: booking.busId.DepatureTime,
-            ArrivalTime: booking.busId.ArrivalTime,
+            depatureTime: booking.busId.depatureTime,
+            arrivalTime: booking.busId.arrivalTime,
             TotalAmount: booking.price
         }
-        console.log(obj);
     return obj;
 }
 
@@ -29,9 +29,9 @@ const addBooking = async (req, res) => {
     const { userId, busId, price, seats } = req.body
     let booking = new Booking({ userId, busId, price, seats })
     let bookingInstance=await booking.save()
-    console.log(bookingInstance._id);
-   let obj=await getDetailedBookings(bookingInstance._id)
-   res.send(obj)
+   let bookingDetails=await getDetailedBookings(bookingInstance._id)
+   sendMail(bookingDetails)
+   res.send(bookingDetails)
 }
 
 const deleteAllBookings=async(req,res)=>{
