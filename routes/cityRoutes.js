@@ -10,6 +10,6 @@ router.post('/addCity',addCity)
 
 router.post('/addCities',addCities)
 
-router.get('/getCityExceptOne',getCityExceptOne)
+router.post('/getCityExceptOne',getCityExceptOne)
 
 module.exports=router

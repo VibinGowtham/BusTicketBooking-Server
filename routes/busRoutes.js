@@ -11,9 +11,9 @@ router.post('/addBuses',addBuses)
 
 router.post('/updateBus',updateBus)
 
-router.get('/getBus',getBus)
+router.post('/getBus',getBus)
 
-router.get('/filterBus',filterBus)
+router.post('/filterBus',filterBus)
 
 router.get('/deleteAllBuses',deleteAllBuses)
 

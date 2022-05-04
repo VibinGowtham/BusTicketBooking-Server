@@ -8,7 +8,7 @@ router.get('/getAllBookings',getAllBookings)
 
 router.post('/addBooking',addBooking)
 
-router.get('/getDetailedBookings',getDetailedBookings)
+router.post('/getDetailedBookings',getDetailedBookings)
 
 router.get('/deleteAllBookings',deleteAllBookings)
 
