@@ -1,7 +1,6 @@
 const User=require('../models/userModel.js')
-// const mongoose=require('../databaseConfig/config')
 const bcrypt=require('bcrypt')
-
+const jwt=require('jsonwebtoken')
 const hashPassword=async(password)=>{
     let salt=await bcrypt.genSalt(10)
      return await bcrypt.hash(password,salt)
@@ -13,7 +12,17 @@ const login=async(req,res)=>{
     let user=await User.findOne({email})
     
     if(user !== null){
-       if(user.email == email && await bcrypt.compare(password,user.password) ) res.send("Login Succesful")
+       if(user.email == email && await bcrypt.compare(password,user.password))
+       {
+           let payload={
+               id:user._id
+           }
+           let token=jwt.sign(payload,process.env.SECRET_KEY,{expiresIn:"30m"})
+           res.send({
+               message:"Successfully logged in",
+               token:`Bearer ${token}`
+           })
+       }
    }
    else res.send("User not found")
 }

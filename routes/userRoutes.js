@@ -3,11 +3,8 @@ const { updateOne } = require("../models/userModel")
 
 const router =express.Router()
 
-const {register,login,getAllUsers,deleteAllUsers,getUser,deleteUser, update}=require('../services/userServices')
+const {getAllUsers,deleteAllUsers,getUser,deleteUser, update}=require('../services/userServices')
 
-router.post('/register',register)
-
-router.post('/login',login)
 
 router.get('/getAll',getAllUsers)
 
