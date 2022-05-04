@@ -68,23 +68,33 @@ res.send(`Added ${count} Valid Buses`)
 const updateBus=async(req,res)=>{
 let busId=req.body._id
 const bus=await Bus.findOne({_id:busId})
-let initialSeats=bus.totalSeats;
-console.log(bus);
+let initialTotalSeats=bus.totalSeats;
+let initialAvailableSeats=bus.availableSeats
 if(bus!==null){
     const{name,price,boardingLocation,destinationLocation,totalSeats,depatureTime,arrivalTime}=req.body
-  await bus.updateOne({
+    await bus.updateOne({
         name,
         price,
         boardingLocation,
         destinationLocation,
         totalSeats,
-        availableSeats:totalSeats,
         depatureTime,
         arrivalTime
     })
-    if(totalSeats!=initialSeats){
-        await Seat.deleteMany({busId})
-        await autoGenerateSeats(busId,totalSeats)
+    if(totalSeats!==undefined && totalSeats!=initialTotalSeats){
+        let diff=initialTotalSeats-totalSeats;
+        console.log(diff);
+        if(diff<0){
+            diff=Math.abs(diff)
+            console.log(initialAvailableSeats+diff);
+            await bus.updateOne({
+                availableSeats:initialAvailableSeats+diff
+            })
+            await autoGenerateSeats(busId,totalSeats,initialTotalSeats)
+        }
+       else{
+          res.send("Cannot delete seats")
+       }
     }
    
     res.send("Updated")

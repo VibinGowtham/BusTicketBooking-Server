@@ -17,7 +17,7 @@ router.get('/filterBus',filterBus)
 
 router.get('/deleteAllBuses',deleteAllBuses)
 
-router.get('/deleteBus',deleteBus)
+router.post('/deleteBus',deleteBus)
 
 
 module.exports=router
