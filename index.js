@@ -25,7 +25,7 @@ app.post('/login',login)
 
 let authenticationMiddleware=passport.authenticate('jwt',{session:false})
 
-app.use('/user',authenticationMiddleware,userRoutes)
+app.use('/user',userRoutes)
 app.use('/city',authenticationMiddleware,cityRoutes)
 app.use('/bus',authenticationMiddleware,busRoutes)
 app.use('/seat',authenticationMiddleware,seatRoutes)

@@ -1,9 +1,11 @@
 const User=require('../models/userModel.js')
 const bcrypt=require('bcrypt')
 const jwt=require('jsonwebtoken')
+
+
 const hashPassword=async(password)=>{
-    let salt=await bcrypt.genSalt(10)
-     return await bcrypt.hash(password,salt)
+let salt=await bcrypt.genSalt(10)
+    return await bcrypt.hash(password,salt)
 }
 
 const login=async(req,res)=>{
@@ -19,7 +21,7 @@ const login=async(req,res)=>{
            }
            let token=jwt.sign(payload,process.env.SECRET_KEY,{expiresIn:"30m"})
            res.send({
-               message:"Successfully logged in",
+               message:"You have been Succesfully logged in",
                token:`Bearer ${token}`
            })
        }
@@ -28,6 +30,7 @@ const login=async(req,res)=>{
 }
 
 const register=async(req,res)=>{
+  
     let alreadyExists =await User.find({email:req.body.email})
     if(alreadyExists.length === 0){
         const{name,contactNo,email,password}=req.body
@@ -38,9 +41,15 @@ const register=async(req,res)=>{
            email,
            password:hashedPassword
        })
-       user.save().then(()=>res.send("You have been successfully registered"))
+       user.save().then((user)=>res.send({
+           message:"You have been successfully registered",
+           status:200
+       }))
     }
-   else res.send("Already registered")
+   else res.send({
+        message:"User exists",
+        status:409
+    })
 }
 
 const getUser=async(req,res)=>{
@@ -74,7 +83,7 @@ const getAllUsers=async(req,res)=>{
 
 const deleteAllUsers=async(req,res)=>{
      await User.deleteMany()
-    User.deleteMany().then(()=>res.redirect('getAllUsers'))
+    User.deleteMany().then(()=>res.redirect('getAll'))
 
 }
 
