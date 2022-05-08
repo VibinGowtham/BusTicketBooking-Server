@@ -25,13 +25,14 @@ const getDetailedBookings = async (_id) => {
     return obj;
 }
 
-const addBooking = async (req, res) => {
-    const { userId, busId, price, seats } = req.body
+const addBooking = async (obj) => {
+    console.log(obj);
+    const { userId, busId, price, seats } = obj
     let booking = new Booking({ userId, busId, price, seats })
     let bookingInstance=await booking.save()
    let bookingDetails=await getDetailedBookings(bookingInstance._id)
    sendMail(bookingDetails)
-   res.send(bookingDetails)
+   return bookingDetails
 }
 
 const deleteAllBookings=async(req,res)=>{

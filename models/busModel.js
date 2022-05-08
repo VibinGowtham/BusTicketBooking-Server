@@ -49,7 +49,11 @@ const busSchema=new Schema({
     },
     depatureTime:{
         type:String,
-        default:"22.30"
+        default:"10:30 Pm"
+    },
+    arrivalTime:{
+        type:String,
+        default:"5:00 Am"
     },
     totalTime:{
     type:String,

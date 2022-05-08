@@ -1,7 +1,7 @@
 const res = require('express/lib/response')
 const Bus = require('../models/busModel')
 const Seat=require('../models/seatModel')
-
+const {addBooking}=require('./bookingServices')
 const getAllSeats=async(req,res)=>{
     let results=await Seat.find()
   let totalSeats=results.length
@@ -12,7 +12,9 @@ const getAllSeats=async(req,res)=>{
 }
 
 const updateAvailability=async(req,res)=>{
-const {seats,busId}=req.body
+  console.log(req.body);
+const {userId,seats,busId,price}=req.body
+console.log(seats,busId);
 for(let i=0;i<seats.length;i++){
     let seat=await Seat.findOne({busId,seatNumber:seats[i]})
     await seat.updateOne({
@@ -23,7 +25,12 @@ for(let i=0;i<seats.length;i++){
       availableSeats:bus.availableSeats-1
     })
   }
-    res.send(`${seats.length} seats updated`)
+  bookingDetails=await addBooking({userId,busId,price,seats})
+
+    res.send({
+         message:`${seats.length} seats updated`,
+         bookingDetails
+    })
 }
 
 
@@ -60,6 +67,7 @@ const deleteAllSeats=async(req,res)=>{
 
 
 const getSeats=async(req,res)=>{
+ 
 const {id}=req.body;
 let seats=await Seat.find({busId:id})
 res.send(seats)

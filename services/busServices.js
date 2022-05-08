@@ -40,6 +40,7 @@ const addValidBus = async (object) => {
             rating,
             departureDate,
             depatureTime,
+            arrivalTime,
             totalTime
         } = object
         let bus = new Bus({
@@ -55,6 +56,7 @@ const addValidBus = async (object) => {
             rating,
             departureDate,
             depatureTime,
+            arrivalTime,
             totalTime
         })
         await bus.save()
@@ -115,6 +117,7 @@ const updateBus = async (req, res) => {
             rating,
             departureDate,
             depatureTime,
+            arrivalTime,
             totalTime
         })
         if (totalSeats !== undefined && totalSeats != initialTotalSeats) {
