@@ -2,11 +2,11 @@ const City = require("../models/cityModel")
 const User = require("../models/userModel")
 
 const getAllCities=async(req,res)=>{
-    let results=await City.find()
-  let totalCities=results.length
+    let cities=await City.find()
+  let totalCities=cities.length
     res.send({
         totalCities,
-        results
+        cities
     })
 }
 

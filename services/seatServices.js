@@ -58,4 +58,11 @@ const deleteAllSeats=async(req,res)=>{
   res.redirect('getAllSeats')
 }
 
-module.exports={getAllSeats,deleteAllSeats,generateSeats,autoGenerateSeats,deleteSeats,updateAvailability}
+
+const getSeats=async(req,res)=>{
+const {id}=req.body;
+let seats=await Seat.find({busId:id})
+res.send(seats)
+}
+
+module.exports={getAllSeats,deleteAllSeats,generateSeats,autoGenerateSeats,deleteSeats,updateAvailability,getSeats}

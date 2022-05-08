@@ -7,11 +7,23 @@ const busSchema=new Schema({
         unique:true,
         required:true
     },
+    busType:{
+        type:String,
+        default:"A/C Non-Sleeper"
+    },
     boardingLocation:{
         type:String,
         required:true
     },
     destinationLocation:{
+        type:String,
+        required:true
+    },
+    pickupLocation:{
+        type:String,
+        required:true
+    },
+    dropLocation:{
         type:String,
         required:true
     },
@@ -27,13 +39,21 @@ const busSchema=new Schema({
         type:Number,
         default:10
     },
+    depatureDate:{
+        type:Number,
+        default:0
+    },
+    rating:{
+        type:String,
+        default:"4.0"
+    },
     depatureTime:{
         type:String,
-        default:()=>new Date().toLocaleString()
+        default:"22.30"
     },
-    arrivalTime:{
+    totalTime:{
     type:String,
-    default:()=>new Date(new Date().setDate(new Date().getDate()+1)).toLocaleString()
+    default:"5h 30m"
     }
 })
 

@@ -47,7 +47,7 @@ const register=async(req,res)=>{
        }))
     }
    else res.send({
-        message:"User exists",
+        message:"Email is already registered.Please Login",
         status:409
     })
 }
