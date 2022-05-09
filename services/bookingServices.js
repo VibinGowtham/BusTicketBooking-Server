@@ -10,19 +10,22 @@ const getAllBookings = async (req, res) => {
 const getDetailedBookings = async (booking) => {
     // let booking = await Booking.findOne({ _id }).populate(['userId', 'busId'])
     let obj = {
-        BookingId: booking._id,
-        Name: booking.userId.name,
-        Email: booking.userId.email,
-        Contact_No: booking.userId.contactNo,
-        Bus: booking.busId.name,
-        Seats: booking.seats,
-        Boarding_Location: booking.busId.boardingLocation,
-        Destination_Location: booking.busId.destinationLocation,
+        bookingId: booking._id,
+        name: booking.userId.name,
+        email: booking.userId.email,
+        contactNo: booking.userId.contactNo,
+        bus: booking.busId.name,
+        busType:booking.busId.busType,
+        seats: booking.seats,
+        boardingLocation: booking.busId.boardingLocation,
+        destinationLocation: booking.busId.destinationLocation,
         depatureTime: booking.busId.depatureTime,
         arrivalTime: booking.busId.arrivalTime,
         paymentMode:booking.paymentMode,
+        pickupLocation:booking.busId.pickupLocation,
+        dropLocation:booking.busId.dropLocation,
         bookedDate:booking.bookedDate,
-        TotalAmount: booking.price
+        totalAmount: booking.price
     }
     return obj;
 }
