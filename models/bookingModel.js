@@ -10,6 +10,14 @@ const BookingSchema=new Schema({
         type:Schema.Types.ObjectId,
         ref:'Bus'
     },
+    bookedDate:{
+        type:String,
+        default:new Date().toDateString()
+    },
+    paymentMode:{
+        type:String,
+        default:'Card'
+    },
     price:{
        type:Number
    },
