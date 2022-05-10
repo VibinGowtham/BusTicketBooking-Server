@@ -1,11 +1,12 @@
 const { location } = require('express/lib/response');
 var nodemailer = require('nodemailer');
+require('dotenv').config()
 
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: 'vibingowtham.cs18@bitsathy.ac.in',
-    pass: 'vibin123vlv'
+    pass: process.env.PASSWORD
   }
 });
 

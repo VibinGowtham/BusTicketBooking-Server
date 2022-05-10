@@ -20,10 +20,11 @@ const login=async(req,res)=>{
                id:user._id
            }
            let token=jwt.sign(payload,process.env.SECRET_KEY,{expiresIn:"30m"})
-           console.log(token)
+        //    console.log(token)
            res.send({
                message:"You have been Succesfully logged in",
                token:`Bearer ${token}`,
+               userId:user._id,
                status:200
            })
        }
