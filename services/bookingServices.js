@@ -55,6 +55,7 @@ const addBooking = async (obj) => {
     // console.log(await bookingInstance.populate(['userId','busId']));
     bookingInstance=await bookingInstance.populate(['userId','busId']);
     let bookingDetails = await getDetailedBookings(bookingInstance)
+    console.log(bookingDetails);
     sendMail(bookingDetails)
     return bookingDetails
 }

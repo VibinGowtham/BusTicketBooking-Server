@@ -2,6 +2,7 @@ const res = require('express/lib/response')
 const Bus = require('../models/busModel')
 const Seat = require('../models/seatModel')
 const { addBooking } = require('./bookingServices')
+
 const getAllSeats = async (req, res) => {
   let results = await Seat.find()
   let totalSeats = results.length

@@ -26,7 +26,6 @@ const count=(cities)=>{
     let count=0;
     cities.forEach(async(value)=>{
         let exist=await addCity(value)
-        // console.log(value+" "+exist);
          if(exist) {count++;  console.log(count);}
     })
   

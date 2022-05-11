@@ -10,11 +10,19 @@ var opts = {
 
 passport.use(new JwtStrategy(opts,async function(jwt_payload, done) {
     console.log(jwt_payload);
-     let user= await User.findOne({id:jwt_payload.id})
+     let user= await User.findOne({_id:jwt_payload.id})
      console.log(user);
      if(user!=null){
          done(null,user)
      }else{
          done(err,false)
      }
-}));
+})
+);
+
+checkAdmin = (req,res,next) => {
+    if (req.user.isAdmin !== true) return res.sendStatus(401)
+    next()
+}
+
+module.exports=checkAdmin

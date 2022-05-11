@@ -6,10 +6,6 @@ const {getAllCities, addCity,addCities,getCityExceptOne}=require('../services/ci
 
 router.get('/getAllCities',getAllCities)
 
-router.post('/addCity',addCity)
-
-router.post('/addCities',addCities)
-
 router.post('/getCityExceptOne',getCityExceptOne)
 
 module.exports=router

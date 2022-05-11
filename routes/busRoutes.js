@@ -1,25 +1,13 @@
 const express = require("express");
-const { getAllBuses, addBus,addBuses, updateBus, deleteAllBuses, deleteBus, filterBus, getBus } = require("../services/busServices");
 
-const router=express.Router()
+const { getAllBuses, addBus, addBuses, updateBus, deleteAllBuses, deleteBus, filterBus, getBus } = require("../services/busServices");
 
-router.get('/getAllBuses',getAllBuses)
-
-router.post('/addBus',addBus)
-
-router.post('/addBuses',addBuses)
-
-router.post('/updateBus',updateBus)
-
-router.post('/getBus',getBus)
-
-router.post('/filterBus',filterBus)
-
-router.get('/deleteAllBuses',deleteAllBuses)
-
-router.post('/deleteBus',deleteBus)
+const router = express.Router()
 
 
-module.exports=router
+router.post('/filterBus', filterBus)
+
+
+module.exports = router
 
 
