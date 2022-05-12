@@ -1,5 +1,6 @@
 const  passport = require('passport');
 const User = require('../models/userModel');
+const router = require('../routes/adminRoutes');
 let JwtStrategy = require('passport-jwt').Strategy
 let ExtractJwt = require('passport-jwt').ExtractJwt;
 
@@ -24,5 +25,6 @@ checkAdmin = (req,res,next) => {
     if (req.user.isAdmin !== true) return res.sendStatus(401)
     next()
 }
+
 
 module.exports=checkAdmin

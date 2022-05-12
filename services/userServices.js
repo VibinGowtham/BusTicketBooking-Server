@@ -19,11 +19,13 @@ const login = async (req, res) => {
                 id: user._id,
                 isAdmin: user.isAdmin
             }
-            let token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "30m" })
-            //    console.log(token)
+            let AccessToken = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "1m" })
+            let RefreshToken = jwt.sign(payload, process.env.REFRESH_KEY, { expiresIn: "7d" })
+
             res.send({
                 message: "You have been Succesfully logged in",
-                token: `Bearer ${token}`,
+                AccessToken: `Bearer ${AccessToken}`,
+                RefreshToken: `Bearer ${RefreshToken}`,
                 userId: user._id,
                 status: 200
             })

@@ -32,10 +32,28 @@ app.use('/city', cityRoutes)
 app.use('/bus', busRoutes)
 app.use('/seat', seatRoutes)
 app.use('/booking', bookingRoutes)
-app.use('/admin',adminRoutes)
+app.use('/admin', adminRoutes)
 
 
-app.get('/protected', authenticationMiddleware, checkAdmin, (req, res) => {
+app.post('/renewToken', (req, res) => {
+  const { refreshToken } = req.body
+  if(refreshToken){
+      jwt.verify(refreshToken,process.env.REFRESH_KEY,(err,payload)=>{
+        if(err) return res.sendStatus(403)
+        let AccessToken=jwt.sign(payload,process.env.SECRET_KEY,{expiresIn:"1m"})
+        res.send({
+          AccessToken:`Bearer ${AccessToken}`
+        })
+      })
+  }
+  else{
+    res.send({
+      status:403
+    })
+  }
+})
+
+app.get('/protected', authenticationMiddleware, (req, res) => {
   res.send("Admin")
 })
 
