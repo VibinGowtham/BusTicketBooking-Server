@@ -46,13 +46,14 @@ const register = async (req, res) => {
             isAdmin
         })
         user.save().then((user) => res.send({
-            message: "You have been successfully registered",
-            status: 200
+            status: 200,
+            message: "User Successfully Registered"
         }))
     }
     else res.send({
-        message: "Email is already registered.Please Login",
-        status: 409
+        status: 403,
+        message: "Email is already registered"
+        
     })
 }
 

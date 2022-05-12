@@ -13,8 +13,8 @@ const filterBus = async (req, res) => {
 }
 
 const getBus = async (req, res) => {
-    const { name } = req.body
-    res.send(await Bus.findOne({ name }))
+    const { id } = req.body
+    res.send(await Bus.findOne({ _id:id }))
 }
 const getAllBuses = async (req, res) => {
     let results = await Bus.find()
@@ -70,9 +70,15 @@ const addValidBus = async (object) => {
 const addBus = async (req, res) => {
     let valid = await addValidBus(req.body);
     if (valid) {
-        res.send("Added Bus")
+        res.send({
+            status:200,
+            message:"Bus Succesfully Added"
+        })
     }
-    else res.send("Failed to Add Bus")
+    else res.send({
+        status:403,
+        message:"Failed to Add Bus"
+    })
 }
 
 const addBuses = async (req, res) => {
