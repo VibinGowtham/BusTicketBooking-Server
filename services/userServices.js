@@ -19,13 +19,14 @@ const login = async (req, res) => {
                 id: user._id,
                 isAdmin: user.isAdmin
             }
-            let AccessToken = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "1m" })
-            let RefreshToken = jwt.sign(payload, process.env.REFRESH_KEY, { expiresIn: "7d" })
+            console.log(payload);
+            let AccessToken = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "5s" })
+            let RefreshToken = jwt.sign(payload, process.env.REFRESH_KEY, { expiresIn: "20s" })
 
             res.send({
                 message: "You have been Succesfully logged in",
-                AccessToken: `Bearer ${AccessToken}`,
-                RefreshToken: `Bearer ${RefreshToken}`,
+                AccessToken: AccessToken,
+                RefreshToken: RefreshToken,
                 userId: user._id,
                 status: 200
             })
@@ -60,27 +61,40 @@ const register = async (req, res) => {
 }
 
 const getUser = async (req, res) => {
-    const user = await User.findOne({ email: req.body.email })
+    const user = await User.findOne({ _id: req.body.userId })
     if (user !== null) res.send(user)
     else res.send("User doesn't exists")
 }
 
 const updateUser = async (req, res) => {
     const { id } = req.body;
+    console.log(req.body);
     let user = await User.findOne({ _id:id })
     if (user !== null) {
         let { name, contactNo, email, password } = req.body;
         if (password !== undefined) password = await hashPassword(password)
         await user.updateOne({ name, contactNo, email, password })
-        res.send(await User.findOne({ _id }))
+        res.send({
+            status:200,
+            message:"User Successfully Updated"
+        })
     }
-    else res.send("User doesn't exists")
+    else res.send({
+        status:409,
+        message:"User not Found"
+    })
 }
 
 const deleteUser = async (req, res) => {
-    const user = await User.deleteOne({ email: req.body.email })
-    if (user !== null) res.send(user)
-    else res.send("User doesn't exists")
+    const user = await User.deleteOne({ _id: req.body.busId })
+    if (user !== null) res.send({
+        status:200,
+        message:"User Successfully Deleted"
+    })
+    else res.send({
+        status:409,
+        message:"User doesn't exists"
+    })
 }
 
 

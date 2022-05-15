@@ -22,27 +22,35 @@ app.use(bodyParser.json())
 
 app.use(passport.initialize())
 
-app.post('/register', register)
+app.post('/register',register)
 
-app.post('/login', login)
+app.post('/login',login)
 
 let authenticationMiddleware = passport.authenticate('jwt', { session: false })
 
-app.use('/city', cityRoutes)
-app.use('/bus', busRoutes)
-app.use('/seat', seatRoutes)
-app.use('/booking', bookingRoutes)
-app.use('/admin', adminRoutes)
+app.use('/city',authenticationMiddleware, cityRoutes)
+app.use('/bus',authenticationMiddleware, busRoutes)
+app.use('/seat',authenticationMiddleware, seatRoutes)
+app.use('/booking', authenticationMiddleware,bookingRoutes)
+app.use('/admin',authenticationMiddleware, adminRoutes)
 
+
+
+app.get('/protected', authenticationMiddleware, (req, res) => {
+  res.send("Admin")
+})
 
 app.post('/renewToken', (req, res) => {
   const { refreshToken } = req.body
   if(refreshToken){
       jwt.verify(refreshToken,process.env.REFRESH_KEY,(err,payload)=>{
         if(err) return res.sendStatus(403)
-        let AccessToken=jwt.sign(payload,process.env.SECRET_KEY,{expiresIn:"1m"})
+        console.log("renew");
+        console.log(payload);
+        // res.send("Ok")
+        let accessToken=jwt.sign({id:payload.id,isAdmin:payload.isAdmin},process.env.SECRET_KEY,{expiresIn:"1m"})
         res.send({
-          AccessToken:`Bearer ${AccessToken}`
+          accessToken
         })
       })
   }
@@ -51,10 +59,6 @@ app.post('/renewToken', (req, res) => {
       status:403
     })
   }
-})
-
-app.get('/protected', authenticationMiddleware, (req, res) => {
-  res.send("Admin")
 })
 
 
