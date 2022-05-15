@@ -14,7 +14,7 @@ const filterBus = async (req, res) => {
 
 const getBus = async (req, res) => {
     const { id } = req.body
-    res.send(await Bus.findOne({ _id:id }))
+    res.send(await Bus.findOne({ _id: id }))
 }
 const getAllBuses = async (req, res) => {
     let results = await Bus.find()
@@ -38,7 +38,7 @@ const addValidBus = async (object) => {
             price,
             totalSeats,
             rating,
-            departureDate,
+            depatureDate,
             depatureTime,
             arrivalTime,
             totalTime
@@ -54,7 +54,7 @@ const addValidBus = async (object) => {
             totalSeats,
             availableSeats: totalSeats,
             rating,
-            departureDate,
+            depatureDate,
             depatureTime,
             arrivalTime,
             totalTime
@@ -71,13 +71,13 @@ const addBus = async (req, res) => {
     let valid = await addValidBus(req.body);
     if (valid) {
         res.send({
-            status:200,
-            message:"Bus Succesfully Added"
+            status: 200,
+            message: "Bus Succesfully Added"
         })
     }
     else res.send({
-        status:403,
-        message:"Failed to Add Bus"
+        status: 403,
+        message: "Failed to Add Bus"
     })
 }
 
@@ -92,11 +92,12 @@ const addBuses = async (req, res) => {
 }
 
 const updateBus = async (req, res) => {
-    let busId = req.body._id
+    let busId = req.body.busId
     const bus = await Bus.findOne({ _id: busId })
+    // res.send(bus)
+    if (bus !== null) {
     let initialTotalSeats = bus.totalSeats;
     let initialAvailableSeats = bus.availableSeats
-    if (bus !== null) {
         const {
             name,
             busType,
@@ -109,6 +110,7 @@ const updateBus = async (req, res) => {
             rating,
             departureDate,
             depatureTime,
+            arrivalTime,
             totalTime
         } = req.body
         await bus.updateOne({
@@ -138,21 +140,37 @@ const updateBus = async (req, res) => {
                 await autoGenerateSeats(busId, totalSeats, initialTotalSeats)
             }
             else {
-                res.send("Cannot delete seats")
+                res.send({
+                    staus: 409,
+                    message: "Cannot delete seats"
+                })
             }
         }
 
-        res.send("Updated")
+        res.send({
+            status: 200,
+            message: "Bus Successfully Updated"
+        })
     }
     else res.send("Bus doesn't exist")
 }
 
 const deleteBus = async (req, res) => {
-    let bus = await Bus.findOne({ name: req.body.name })
-    await Bus.deleteOne({ name: req.body.name })
-    await Seat.deleteMany({ busId: bus._id })
-    await Booking.deleteMany({ busId: bus._id })
-    res.send("Deleted Successfully")
+    let bus = await Bus.findOne({ _id: req.body.busId })
+    if(bus){
+        await Bus.deleteOne({ _id: req.body.busId })
+        await Seat.deleteMany({ busId: bus._id })
+        await Booking.deleteMany({ busId: bus._id })
+        res.send({
+            status:200,
+            message:"Bus deleted Successfully"
+        })
+    }
+   else res.send({
+       status:424,
+       message:"Bus not Found"
+   })
+    
 }
 
 const deleteAllBuses = async (req, res) => {

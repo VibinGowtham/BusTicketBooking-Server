@@ -4,7 +4,7 @@ const { getAllBuses, addBus, addBuses, updateBus, getBus, deleteAllBuses, delete
 
 const { addCity, addCities } = require('../services/cityServices')
 
-const { getAllUsers, deleteAllUsers, getUser, deleteUser, update } = require('../services/userServices')
+const { getAllUsers, deleteAllUsers, getUser, deleteUser, updateUser } = require('../services/userServices')
 
 const express = require("express");
 
@@ -34,9 +34,9 @@ router.get('/getAllUsers', getAllUsers)
 
 router.post('/getUser', getUser)
 
-router.post('/update', update)
+router.post('/updateUser', updateUser)
 
-router.post('/delete', deleteUser)
+router.post('/deleteUser', deleteUser)
 
 router.get('/deleteAll', deleteAllUsers)
 

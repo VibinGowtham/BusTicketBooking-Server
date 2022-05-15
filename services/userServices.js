@@ -65,9 +65,9 @@ const getUser = async (req, res) => {
     else res.send("User doesn't exists")
 }
 
-const update = async (req, res) => {
-    const { _id } = req.body;
-    let user = await User.findOne({ _id })
+const updateUser = async (req, res) => {
+    const { id } = req.body;
+    let user = await User.findOne({ _id:id })
     if (user !== null) {
         let { name, contactNo, email, password } = req.body;
         if (password !== undefined) password = await hashPassword(password)
@@ -94,4 +94,4 @@ const deleteAllUsers = async (req, res) => {
 
 }
 
-module.exports = { register, login, getAllUsers, deleteAllUsers, getUser, deleteUser, update }
+module.exports = { register, login, getAllUsers, deleteAllUsers, getUser, deleteUser, updateUser }
