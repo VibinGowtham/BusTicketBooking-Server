@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllSeats ,deleteAllSeats,generateSeats,deleteSeats, updateAvailability, getSeats} = require("../services/seatServices");
+const { getAllSeats ,deleteAllSeats,generateSeats,deleteSeats, updateAvailability, getSeats,releaseSeats} = require("../services/seatServices");
 const router=express.Router()
 
 router.get('/getAllSeats',getAllSeats)
@@ -13,5 +13,7 @@ router.post('/generateSeats',generateSeats)
 router.post('/updateAvailability',updateAvailability)
 
 router.post('/getSeats',getSeats)
+
+router.post('/releaseSeats',releaseSeats)
 
 module.exports=router

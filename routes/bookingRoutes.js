@@ -1,6 +1,6 @@
 const express = require("express")
 
-const { addBooking, getDetailedBookings, getBookings } = require("../services/bookingServices")
+const { addBooking, getDetailedBookings, getBookings ,deleteBooking} = require("../services/bookingServices")
 
 const router =express.Router()
 

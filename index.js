@@ -11,6 +11,7 @@ const adminRoutes = require('./routes/adminRoutes')
 const passport = require('passport')
 const { login, register } = require('./services/userServices')
 
+
 const jwt = require('jsonwebtoken')
 
 require('dotenv').config()
@@ -29,14 +30,17 @@ app.post('/login',login)
 let authenticationMiddleware = passport.authenticate('jwt', { session: false })
 
 app.use('/city',authenticationMiddleware, cityRoutes)
-app.use('/bus',authenticationMiddleware, busRoutes)
-app.use('/seat',authenticationMiddleware, seatRoutes)
-app.use('/booking', authenticationMiddleware,bookingRoutes)
-app.use('/admin',authenticationMiddleware, adminRoutes)
+app.use('/bus', busRoutes)
+app.use('/seat', seatRoutes)
+app.use('/booking',bookingRoutes)
+app.use('/admin', adminRoutes)
 
 
+app.get('/home',(req,res)=>{
+  res.send("Home")
+})
 
-app.get('/protected', authenticationMiddleware, (req, res) => {
+app.get('/protected', authenticationMiddleware, checkAdmin,(req, res) => {
   res.send("Admin")
 })
 

@@ -1,4 +1,5 @@
 const res = require('express/lib/response')
+const Booking = require('../models/bookingModel')
 const Bus = require('../models/busModel')
 const Seat = require('../models/seatModel')
 const { addBooking } = require('./bookingServices')
@@ -10,6 +11,25 @@ const getAllSeats = async (req, res) => {
     totalSeats,
     results
   })
+}
+
+const releaseSeats = async (req, res) => {
+  const { busId, bookingId, seats } = req.body
+  for (let i = 0; i < seats.length; i++) {
+    let seat = Seat.findOne({ busId, seatNumber: seats[i] })
+    await seat.updateOne({
+      availability: true
+    })
+    let bus = await Bus.findOne({ _id: busId })
+    await bus.updateOne({
+      availableSeats: bus.availableSeats + 1
+    })
+  }
+  await Booking.deleteOne({ _id: bookingId })
+  res.send({
+    status: 200
+  })
+
 }
 
 const updateAvailability = async (req, res) => {
@@ -74,4 +94,4 @@ const getSeats = async (req, res) => {
   res.send(seats)
 }
 
-module.exports = { getAllSeats, deleteAllSeats, generateSeats, autoGenerateSeats, deleteSeats, updateAvailability, getSeats }
+module.exports = { getAllSeats, deleteAllSeats, generateSeats, autoGenerateSeats, deleteSeats, updateAvailability, getSeats, releaseSeats }
