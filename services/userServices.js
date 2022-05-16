@@ -20,8 +20,8 @@ const login = async (req, res) => {
                 isAdmin: user.isAdmin
             }
             console.log(payload);
-            let AccessToken = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "5s" })
-            let RefreshToken = jwt.sign(payload, process.env.REFRESH_KEY, { expiresIn: "20s" })
+            let AccessToken = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "10s" })
+            let RefreshToken = jwt.sign(payload, process.env.REFRESH_KEY, { expiresIn: "1d" })
 
             res.send({
                 message: "You have been Succesfully logged in",
