@@ -21,13 +21,15 @@ const releaseSeats = async (req, res) => {
       availability: true
     })
     let bus = await Bus.findOne({ _id: busId })
+    
     await bus.updateOne({
       availableSeats: bus.availableSeats + 1
     })
   }
   await Booking.deleteOne({ _id: bookingId })
   res.send({
-    status: 200
+    status: 200,
+    message:"Booking Cancelled Succesfully"
   })
 
 }

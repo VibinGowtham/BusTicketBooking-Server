@@ -14,7 +14,6 @@ router.get('/getAllBookings', getAllBookings)
 
 router.get('/deleteAllBookings', deleteAllBookings)
 
-router.get('/getAllDetailedBookings', getAllDetailedBookings)
 
 router.get('/getAllBuses', getAllBuses)
 
@@ -24,7 +23,7 @@ router.post('/addBuses', addBuses)
 
 router.post('/updateBus', updateBus)
 
-router.post('/getBus', getBus)
+
 
 router.post('/addCity', addCity)
 

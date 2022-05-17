@@ -5,6 +5,9 @@ const { getAllBuses, addBus, addBuses, updateBus, deleteAllBuses, deleteBus, fil
 const router = express.Router()
 
 
+router.post('/getBus', getBus)
+
+
 router.post('/filterBus', filterBus)
 
 

@@ -176,6 +176,7 @@ const deleteBus = async (req, res) => {
 const deleteAllBuses = async (req, res) => {
     await Bus.deleteMany()
     await Seat.deleteMany()
+    await Booking.deleteMany()
     res.redirect('getAllBuses')
 }
 

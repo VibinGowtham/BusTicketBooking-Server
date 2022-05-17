@@ -12,6 +12,9 @@ const getAllBookings = async (req, res) => {
 
 const getDetailedBookings = async (booking) => {
     // let booking = await Booking.findOne({ _id }).populate(['userId', 'busId'])
+    
+    if(booking==null) return {}
+    else{
     let obj = {
         busId: booking.busId._id,
         bookingId: booking._id,
@@ -32,6 +35,8 @@ const getDetailedBookings = async (booking) => {
         totalAmount: booking.price
     }
     return obj;
+    }
+
 }
 
 const getAllDetailedBookings = async (req, res) => {
@@ -41,6 +46,8 @@ const getAllDetailedBookings = async (req, res) => {
 const getBookings = async (req, res) => {
     const { userId } = req.body
     let results = await Booking.find({ userId }).populate(['userId', 'busId'])
+    console.log("Results");
+    console.log(results);
     let filteredResults = []
     for (let i = 0; i < results.length; i++) {
         filteredResults[i] = await getDetailedBookings(results[i])

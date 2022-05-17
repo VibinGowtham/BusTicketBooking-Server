@@ -20,7 +20,7 @@ const login = async (req, res) => {
                 isAdmin: user.isAdmin
             }
             console.log(payload);
-            let AccessToken = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "10s" })
+            let AccessToken = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "30m" })
             let RefreshToken = jwt.sign(payload, process.env.REFRESH_KEY, { expiresIn: "1d" })
 
             res.send({
@@ -31,8 +31,15 @@ const login = async (req, res) => {
                 status: 200
             })
         }
+        else res.send({
+            status:404,
+            message:"Incorrect Username/Password"
+        })
     }
-    else res.send("User not found")
+    else res.send({
+        status:404,
+        message:"Incorrect Username/Password"
+    })
 }
 
 const register = async (req, res) => {
