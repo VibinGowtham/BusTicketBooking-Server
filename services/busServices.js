@@ -6,9 +6,9 @@ const Seat = require('../models/seatModel')
 const { autoGenerateSeats } = require('./seatServices')
 
 const filterBus = async (req, res) => {
-    const { boardingLocation, destinationLocation, departureDate } = req.body
+    const { boardingLocation, destinationLocation, depatureDate } = req.body
 
-    let buses = await Bus.find({ boardingLocation, destinationLocation, departureDate })
+    let buses = await Bus.find({ boardingLocation, destinationLocation, depatureDate })
     res.send(buses)
 }
 
@@ -26,7 +26,8 @@ const getAllBuses = async (req, res) => {
 }
 
 const addValidBus = async (object) => {
-    let alreadyExists = await Bus.find({ name: object.name })
+    let name=object.name
+    let alreadyExists = await Bus.find({ name })
     if (alreadyExists.length === 0) {
         const {
             name,
@@ -96,8 +97,8 @@ const updateBus = async (req, res) => {
     const bus = await Bus.findOne({ _id: busId })
     // res.send(bus)
     if (bus !== null) {
-    let initialTotalSeats = bus.totalSeats;
-    let initialAvailableSeats = bus.availableSeats
+        let initialTotalSeats = bus.totalSeats;
+        let initialAvailableSeats = bus.availableSeats
         const {
             name,
             busType,
@@ -157,20 +158,20 @@ const updateBus = async (req, res) => {
 
 const deleteBus = async (req, res) => {
     let bus = await Bus.findOne({ _id: req.body.busId })
-    if(bus){
+    if (bus) {
         await Bus.deleteOne({ _id: req.body.busId })
         await Seat.deleteMany({ busId: bus._id })
         await Booking.deleteMany({ busId: bus._id })
         res.send({
-            status:200,
-            message:"Bus deleted Successfully"
+            status: 200,
+            message: "Bus deleted Successfully"
         })
     }
-   else res.send({
-       status:424,
-       message:"Bus not Found"
-   })
-    
+    else res.send({
+        status: 424,
+        message: "Bus not Found"
+    })
+
 }
 
 const deleteAllBuses = async (req, res) => {
