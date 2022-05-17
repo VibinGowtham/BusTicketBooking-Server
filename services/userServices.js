@@ -75,12 +75,13 @@ const getUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
     const { id } = req.body;
+    console.log("Update");
     console.log(req.body);
     let user = await User.findOne({ _id:id })
     if (user !== null) {
-        let { name, contactNo, email, password } = req.body;
+        let { name, contactNo, email, password,isAdmin } = req.body;
         if (password !== undefined) password = await hashPassword(password)
-        await user.updateOne({ name, contactNo, email, password })
+        await user.updateOne({ name, contactNo, email, password,isAdmin })
         res.send({
             status:200,
             message:"User Successfully Updated"

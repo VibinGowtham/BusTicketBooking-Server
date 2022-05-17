@@ -109,7 +109,7 @@ const updateBus = async (req, res) => {
             price,
             totalSeats,
             rating,
-            departureDate,
+            depatureDate,
             depatureTime,
             arrivalTime,
             totalTime
@@ -124,7 +124,7 @@ const updateBus = async (req, res) => {
             price,
             totalSeats,
             rating,
-            departureDate,
+            depatureDate,
             depatureTime,
             arrivalTime,
             totalTime
@@ -139,19 +139,20 @@ const updateBus = async (req, res) => {
                     availableSeats: initialAvailableSeats + diff
                 })
                 await autoGenerateSeats(busId, totalSeats, initialTotalSeats)
+                res.send({
+                    status: 200,
+                    message: "Bus Successfully Updated"
+                })
             }
             else {
                 res.send({
-                    staus: 409,
+                    status: 409,
                     message: "Cannot delete seats"
                 })
             }
         }
-
-        res.send({
-            status: 200,
-            message: "Bus Successfully Updated"
-        })
+        
+     
     }
     else res.send("Bus doesn't exist")
 }
