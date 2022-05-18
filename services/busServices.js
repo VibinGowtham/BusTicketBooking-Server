@@ -169,7 +169,7 @@ const deleteBus = async (req, res) => {
         })
     }
     else res.send({
-        status: 424,
+        status: 409,
         message: "Bus not Found"
     })
 

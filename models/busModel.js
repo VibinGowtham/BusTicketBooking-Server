@@ -33,11 +33,11 @@ const busSchema=new Schema({
     },
     totalSeats:{
         type:Number,
-        default:10
+        default:12
     },
     availableSeats:{
         type:Number,
-        default:10
+        default:12
     },
     depatureDate:{
         type:Number,
