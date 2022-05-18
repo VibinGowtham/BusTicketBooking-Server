@@ -1,6 +1,8 @@
 const User = require('../models/userModel.js')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const Booking = require('../models/bookingModel.js')
+const { cancelBooking } = require('./seatServices.js')
 
 
 const hashPassword = async (password) => {
@@ -32,13 +34,13 @@ const login = async (req, res) => {
             })
         }
         else res.send({
-            status:404,
-            message:"Incorrect Username/Password"
+            status: 404,
+            message: "Incorrect Username/Password"
         })
     }
     else res.send({
-        status:404,
-        message:"Incorrect Username/Password"
+        status: 404,
+        message: "Incorrect Username/Password"
     })
 }
 
@@ -46,7 +48,7 @@ const register = async (req, res) => {
 
     let alreadyExists = await User.find({ email: req.body.email })
     if (alreadyExists.length === 0) {
-        const { name, contactNo, email, password ,isAdmin} = req.body
+        const { name, contactNo, email, password, isAdmin } = req.body
         let hashedPassword = await hashPassword(password)
         let user = new User({
             name,
@@ -63,7 +65,7 @@ const register = async (req, res) => {
     else res.send({
         status: 403,
         message: "Email is already registered"
-        
+
     })
 }
 
@@ -77,31 +79,52 @@ const updateUser = async (req, res) => {
     const { id } = req.body;
     console.log("Update");
     console.log(req.body);
-    let user = await User.findOne({ _id:id })
+    let user = await User.findOne({ _id: id })
     if (user !== null) {
-        let { name, contactNo, email, password,isAdmin } = req.body;
+        let { name, contactNo, email, password, isAdmin } = req.body;
         if (password !== undefined) password = await hashPassword(password)
-        await user.updateOne({ name, contactNo, email, password,isAdmin })
+        await user.updateOne({ name, contactNo, email, password, isAdmin })
         res.send({
-            status:200,
-            message:"User Successfully Updated"
+            status: 200,
+            message: "User Successfully Updated"
         })
     }
     else res.send({
-        status:409,
-        message:"User not Found"
+        status: 409,
+        message: "User not Found"
     })
 }
 
 const deleteUser = async (req, res) => {
-    const user = await User.deleteOne({ _id: req.body.busId })
-    if (user !== null) res.send({
-        status:200,
-        message:"User Successfully Deleted"
-    })
+    const { userId } = req.body
+    console.log("Body");
+    console.log(req.body);
+    const user = await User.findOne({ _id: userId })
+    console.log("User");
+    console.log(user);
+    if (user != null) {
+        let bookings = await Booking.find({ userId })
+        console.log("Bookings");
+        console.log(bookings);
+        for (let i = 0; i < bookings.length; i++) {
+            let body = {
+                busId: bookings[i].busId,
+                userId,
+                seats: bookings[i].seats
+            }
+            console.log(body);
+            await cancelBooking(body)
+        }
+        await User.deleteOne({ _id: userId })
+
+        res.send({
+            status: 200,
+            message: "User Successfully Deleted"
+        })
+    }
     else res.send({
-        status:409,
-        message:"User doesn't exists"
+        status: 409,
+        message: "User doesn't exists"
     })
 }
 

@@ -13,8 +13,9 @@ const getAllSeats = async (req, res) => {
   })
 }
 
-const releaseSeats = async (req, res) => {
-  const { busId, bookingId, seats } = req.body
+const cancelBooking=async(obj)=>{
+  const { busId, bookingId, seats } = obj
+
   for (let i = 0; i < seats.length; i++) {
     let seat = Seat.findOne({ busId, seatNumber: seats[i] })
     await seat.updateOne({
@@ -27,10 +28,23 @@ const releaseSeats = async (req, res) => {
     })
   }
   await Booking.deleteOne({ _id: bookingId })
+  return true
+}
+
+
+const releaseSeats = async (req, res) => {
+  if(await cancelBooking(req.body)){
+    res.send({
+      status: 200,
+      message:"Booking Cancelled Succesfully"
+    })
+  }
+ else{
   res.send({
-    status: 200,
-    message:"Booking Cancelled Succesfully"
+    status: 409,
+    message:"Booking Cancellation Failed"
   })
+ }
 
 }
 
@@ -80,7 +94,9 @@ const generateSeats = async (req, res) => {
 const deleteSeats = async (req, res) => {
   let busId = req.body.busId
   console.log(busId);
+  let bus=await Bus.findOne({_id:busId})
   await Seat.deleteMany({ busId })
+  await generateSeats(busId,bus.totalSeats)
   res.send("Successfully deleted Seats")
 }
 
@@ -96,4 +112,4 @@ const getSeats = async (req, res) => {
   res.send(seats)
 }
 
-module.exports = { getAllSeats, deleteAllSeats, generateSeats, autoGenerateSeats, deleteSeats, updateAvailability, getSeats, releaseSeats }
+module.exports = { getAllSeats,cancelBooking, deleteAllSeats, generateSeats, autoGenerateSeats, deleteSeats, updateAvailability, getSeats, releaseSeats }
