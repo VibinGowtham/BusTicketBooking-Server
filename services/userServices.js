@@ -21,9 +21,9 @@ const login = async (req, res) => {
                 id: user._id,
                 isAdmin: user.isAdmin
             }
-            console.log(payload);
-            let AccessToken = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "30m" })
-            let RefreshToken = jwt.sign(payload, process.env.REFRESH_KEY, { expiresIn: "1d" })
+
+            let AccessToken = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "10m" })
+            let RefreshToken = jwt.sign(payload, process.env.REFRESH_KEY, { expiresIn: "4d" })
 
             res.send({
                 message: "You have been Succesfully logged in",
@@ -77,8 +77,6 @@ const getUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
     const { id } = req.body;
-    console.log("Update");
-    console.log(req.body);
     let user = await User.findOne({ _id: id })
     if (user !== null) {
         let { name, contactNo, email, password, isAdmin } = req.body;
@@ -97,22 +95,17 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     const { userId } = req.body
-    console.log("Body");
-    console.log(req.body);
     const user = await User.findOne({ _id: userId })
-    console.log("User");
-    console.log(user);
+
     if (user != null) {
         let bookings = await Booking.find({ userId })
-        console.log("Bookings");
-        console.log(bookings);
+
         for (let i = 0; i < bookings.length; i++) {
             let body = {
                 busId: bookings[i].busId,
                 userId,
                 seats: bookings[i].seats
             }
-            console.log(body);
             await cancelBooking(body)
         }
         await User.deleteOne({ _id: userId })

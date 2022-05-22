@@ -11,8 +11,6 @@ const getAllBookings = async (req, res) => {
 
 
 const getDetailedBookings = async (booking) => {
-    // let booking = await Booking.findOne({ _id }).populate(['userId', 'busId'])
-    
     if(booking==null) return {}
     else{
     let obj = {
@@ -46,8 +44,6 @@ const getAllDetailedBookings = async (req, res) => {
 const getBookings = async (req, res) => {
     const { userId } = req.body
     let results = await Booking.find({ userId }).populate(['userId', 'busId'])
-    console.log("Results");
-    console.log(results);
     let filteredResults = []
     for (let i = 0; i < results.length; i++) {
         filteredResults[i] = await getDetailedBookings(results[i])
@@ -59,15 +55,11 @@ const getBookings = async (req, res) => {
 }
 
 const addBooking = async (obj) => {
-    console.log(obj);
     const { userId, busId, price, seats, bookedDate, paymentMode } = obj
     let booking = new Booking({ userId, busId, price, seats, bookedDate, paymentMode })
     let bookingInstance = await booking.save()
-    // console.log(await bookingInstance.populate(['userId','busId']));
     bookingInstance = await bookingInstance.populate(['userId', 'busId']);
-    console.log("Booking Instance");
     let bookingDetails = await getDetailedBookings(bookingInstance)
-    console.log(bookingDetails);
     sendMail(bookingDetails)
     return bookingDetails
 }

@@ -49,10 +49,9 @@ const releaseSeats = async (req, res) => {
 }
 
 const updateAvailability = async (req, res) => {
-  console.log(req.body);
   const { userId, seats, busId, price, bookedDate, paymentMode } = req.body
-  console.log(seats, busId);
   for (let i = 0; i < seats.length; i++) {
+
     let seat = await Seat.findOne({ busId, seatNumber: seats[i] })
 
     await seat.updateOne({
@@ -93,7 +92,6 @@ const generateSeats = async (req, res) => {
 
 const deleteSeats = async (req, res) => {
   let busId = req.body.busId
-  console.log(busId);
   let bus=await Bus.findOne({_id:busId})
   await Seat.deleteMany({ busId })
   await generateSeats(busId,bus.totalSeats)

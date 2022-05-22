@@ -10,9 +10,7 @@ var opts = {
 }
 
 passport.use(new JwtStrategy(opts,async function(jwt_payload, done) {
-    console.log(jwt_payload);
      let user= await User.findOne({_id:jwt_payload.id})
-     console.log(user);
      if(user!=null){
          done(null,user)
      }else{

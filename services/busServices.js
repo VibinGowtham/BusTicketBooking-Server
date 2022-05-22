@@ -9,6 +9,7 @@ const filterBus = async (req, res) => {
     const { boardingLocation, destinationLocation, depatureDate } = req.body
 
     let buses = await Bus.find({ boardingLocation, destinationLocation, depatureDate })
+
     res.send(buses)
 }
 
@@ -24,9 +25,23 @@ const getAllBuses = async (req, res) => {
         results
     })
 }
+const getAllLocations = async (req, res) => {
+    let buses = await Bus.find()
+    let boardinglocations = []
+    let destinationLocations = []
+    for (let i = 0; i < buses.length; i++) {
+        let bus = buses[i]
+        boardinglocations[i]=bus.boardingLocation
+        destinationLocations[i]=bus.destinationLocation
+    }
+    res.json({
+        boardinglocations:[...new Set(boardinglocations)], 
+        destinationLocations:[...new Set(destinationLocations)]
+    })
+}
 
 const addValidBus = async (object) => {
-    let name=object.name
+    let name = object.name
     let alreadyExists = await Bus.find({ name })
     if (alreadyExists.length === 0) {
         const {
@@ -82,6 +97,8 @@ const addBus = async (req, res) => {
     })
 }
 
+
+
 const addBuses = async (req, res) => {
     let count = 0;
     let Buses = req.body;
@@ -92,10 +109,10 @@ const addBuses = async (req, res) => {
     res.send(`Added ${count} Valid Buses`)
 }
 
-const updateBus = async (req, res) => {
+const updateBus = async (req, res) => {    
     let busId = req.body.busId
     const bus = await Bus.findOne({ _id: busId })
-    // res.send(bus)
+
     if (bus !== null) {
         let initialTotalSeats = bus.totalSeats;
         let initialAvailableSeats = bus.availableSeats
@@ -114,7 +131,7 @@ const updateBus = async (req, res) => {
             arrivalTime,
             totalTime
         } = req.body
-        await bus.updateOne({
+    await bus.updateOne({
             name,
             busType,
             boardingLocation,
@@ -129,12 +146,11 @@ const updateBus = async (req, res) => {
             arrivalTime,
             totalTime
         })
+
         if (totalSeats !== undefined && totalSeats != initialTotalSeats) {
             let diff = initialTotalSeats - totalSeats;
-            console.log(diff);
             if (diff < 0) {
                 diff = Math.abs(diff)
-                console.log(initialAvailableSeats + diff);
                 await bus.updateOne({
                     availableSeats: initialAvailableSeats + diff
                 })
@@ -151,8 +167,12 @@ const updateBus = async (req, res) => {
                 })
             }
         }
-        
-     
+        else{
+            res.send({
+                status: 200,
+                message: "Bus Successfully Updated"
+            })
+        }
     }
     else res.send("Bus doesn't exist")
 }
@@ -183,4 +203,4 @@ const deleteAllBuses = async (req, res) => {
 }
 
 
-module.exports = { getAllBuses, addBus, addBuses, updateBus, deleteAllBuses, deleteBus, filterBus, getBus }
+module.exports = { getAllBuses, addBus, addBuses, updateBus, deleteAllBuses, deleteBus, filterBus, getBus, getAllLocations }
