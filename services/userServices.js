@@ -34,12 +34,12 @@ const login = async (req, res) => {
             })
         }
         else res.send({
-            status: 404,
+            status: 403,
             message: "Incorrect Username/Password"
         })
     }
     else res.send({
-        status: 404,
+        status: 403,
         message: "Incorrect Username/Password"
     })
 }

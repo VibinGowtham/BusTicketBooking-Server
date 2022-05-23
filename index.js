@@ -50,9 +50,6 @@ app.post('/renewToken', (req, res) => {
     try{
       jwt.verify(refreshToken,process.env.REFRESH_KEY,(err,payload)=>{
         if(err) return res.sendStatus(403)
-        console.log("renew");
-        console.log(payload);
-        // res.send("Ok")
         let accessToken=jwt.sign({id:payload.id,isAdmin:payload.isAdmin},process.env.SECRET_KEY,{expiresIn:"15s"})
         res.send({
           accessToken
