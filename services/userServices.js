@@ -75,6 +75,15 @@ const getUser = async (req, res) => {
     else res.send("User doesn't exists")
 }
 
+const getUserName=async(req,res)=>{
+    const user = await User.findOne({ _id: req.body.userId })
+    if (user !== null) res.send({
+        status:200,
+        userName:user.name
+    })
+    else res.send("User doesn't exists") 
+}
+
 const updateUser = async (req, res) => {
     const { id } = req.body;
     let user = await User.findOne({ _id: id })
@@ -132,4 +141,4 @@ const deleteAllUsers = async (req, res) => {
 
 }
 
-module.exports = { register, login, getAllUsers, deleteAllUsers, getUser, deleteUser, updateUser }
+module.exports = { register, login, getAllUsers, deleteAllUsers, getUser, deleteUser, updateUser,getUserName }

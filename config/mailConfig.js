@@ -10,9 +10,6 @@ var transporter = nodemailer.createTransport({
   }
 });
 
-
-
-
 const sendMail = (bookingDetails) => {
 
   let confirmationHTML =

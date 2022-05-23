@@ -8,14 +8,16 @@ const busRoutes = require('./routes/busRoutes')
 const seatRoutes = require('./routes/seatRoutes')
 const bookingRoutes = require('./routes/bookingRoutes')
 const adminRoutes = require('./routes/adminRoutes')
+const payment=require('./config/razorpayConfig')
 const passport = require('passport')
-const { login, register } = require('./services/userServices')
+const { login, register,getUserName } = require('./services/userServices')
 
 
 const jwt = require('jsonwebtoken')
 
 require('dotenv').config()
 require('./config/passportConfig')
+require('./config/razorpayConfig')
 
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -27,8 +29,11 @@ app.post('/register',register)
 
 app.post('/login',login)
 
+app.post('/getUserName',getUserName)
+
 let authenticationMiddleware = passport.authenticate('jwt', { session: false })
 
+app.use('/payment',authenticationMiddleware,payment)
 app.use('/city',authenticationMiddleware, cityRoutes)
 app.use('/bus',authenticationMiddleware, busRoutes)
 app.use('/seat',authenticationMiddleware, seatRoutes)
